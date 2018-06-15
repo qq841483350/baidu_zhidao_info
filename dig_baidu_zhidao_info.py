@@ -1,5 +1,5 @@
 #coding:utf8
-#百度知道问答内容抓取  多线程 
+#百度知道问答内容抓取，标题与回答抓取并自动导出到文本文档
 import sys,wx,lxml.html,requests,threading
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -38,7 +38,7 @@ def get_next_page_url(url):
         get_next_page_url(next_page_url)
 
     else:
-        print '抓取完毕'
+        print '关键词'.decode('utf8'),keyword,'信息抓取完毕'.decode('utf8')
 
 
 def get_info(url):
@@ -50,8 +50,8 @@ def get_info(url):
         x.start()
 
 def info_append(url):
-    global keyword1
-    keyword1="word"
+    # global keyword1
+    # keyword1="word"
     if 'zhidao' in url:
         html=get_html(url)
         if '发布于' in html:
@@ -79,7 +79,12 @@ def info_append(url):
                 content=re.sub('<iclass="','',content)
                 content=re.sub('\|','',content)
                 content=re.sub('"class="ikqb_img_alink"','',content)
-                result=title+"\n"+content+"\n"+"\n"
+
+                result=title+"\n\n"+content+"\n"+"\n"
+
+                f=open('%s.txt'%keyword.decode('utf8').encode('gbk'),'a')
+                f.write(result)
+                f.close()
                 print result
             else:
                 pass
@@ -105,11 +110,15 @@ if __name__=="__main__":
 3、微信公众号：qq841483350,欢迎关注
 
 4、使用方法：在下方输入一个关键词，然后按 回车 继续即可
-'''
 
-    keyword=raw_input("enther the keywords:")
-    get_word(keyword)
-    raw_input()
+'''.decode('utf8')
+    while True:
+
+        keyword=raw_input("enter the keyword:")
+        get_word(keyword)
+        os.system('%s.txt'%keyword.decode('utf8'))
+        # raw_input("continue:")
+
 
     # app=wx.App()
     # win=wx.Frame(None,title="【百度知道信息抓取】使用方法：填入接口地址与URL然后点击提交运行 《开发者:李亚涛,微信:841483350》".decode('utf8'),size=(850,700))
