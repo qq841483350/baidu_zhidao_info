@@ -81,7 +81,7 @@ def info_append(url):
                 content=re.sub('"class="ikqb_img_alink"','',content)
 
                 result=title+"\n\n"+content+"\n"+"\n"
-
+                print result
                 f=open('%s.txt'%keyword.decode('utf8').encode('gbk'),'a')
                 f.write(result)
                 f.close()
